@@ -9,6 +9,7 @@ import { STORY_CHAPTERS, useStory } from "./storyShared";
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const ANCHOR_NAMES = ["hero", "bridge", "packages", "process", "stats", "cta"];
+const DARK_SECTIONS = new Set(["process", "stats", "cta"]);
 const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 
 function smoothPath(points, compact) {
@@ -90,6 +91,19 @@ function measure(wrapper, compact) {
     return stop;
   });
 
+  const palette = getComputedStyle(document.documentElement);
+  const inkOnLight = palette.getPropertyValue("--navy").trim() || "#0b1b3a";
+  const inkOnDark = palette.getPropertyValue("--yellow").trim() || "#ffc93c";
+  const inkAt = (name) => (DARK_SECTIONS.has(name) ? inkOnDark : inkOnLight);
+  const colorStops = [
+    { offset: 0, color: inkAt(anchors[0].name) },
+    ...anchors.map(({ name, rect }, index) => ({
+      offset: clamp((points[index].y + rect.height * 0.5) / wrapperHeight, 0, 1),
+      color: inkAt(name),
+    })),
+    { offset: 1, color: inkAt(anchors[anchors.length - 1].name) },
+  ];
+
   const cumulative = [0];
   for (let index = 1; index < points.length; index += 1) {
     const distance = Math.hypot(points[index].x - points[index - 1].x, points[index].y - points[index - 1].y);
@@ -104,6 +118,7 @@ function measure(wrapper, compact) {
     height: wrapperHeight,
     stops,
     pathStops,
+    colorStops,
     d: smoothPath(points, compact),
   };
 }
@@ -123,6 +138,8 @@ function stageAt(progress, stops, chapterRef) {
 export default function StoryThread() {
   const overlayRef = useRef(null);
   const svgRef = useRef(null);
+  const gradientRef = useRef(null);
+  const colorStopRefs = useRef([]);
   const pathRef = useRef(null);
   const glowRef = useRef(null);
   const tokenRef = useRef(null);
@@ -161,6 +178,13 @@ export default function StoryThread() {
       glow.setAttribute("d", data.d);
 
       svgRef.current?.setAttribute("viewBox", `0 0 ${data.width} ${data.height}`);
+      gradientRef.current?.setAttribute("y2", `${data.height}`);
+      colorStopRefs.current.forEach((node, index) => {
+        if (!node) return;
+        const stop = data.colorStops[Math.min(index, data.colorStops.length - 1)];
+        node.setAttribute("offset", `${stop.offset}`);
+        node.setAttribute("stop-color", stop.color);
+      });
 
       const length = path.getTotalLength() || 1;
       [path, glow].forEach((node) => {
@@ -291,8 +315,30 @@ export default function StoryThread() {
   return (
     <div className={styles.overlay} ref={overlayRef} aria-hidden="true">
       <svg className={styles.thread} ref={svgRef} preserveAspectRatio="none" role="presentation">
-        <path ref={glowRef} className={styles.threadGlow} />
-        <path ref={pathRef} className={styles.threadLine} />
+        <defs>
+          <linearGradient
+            id="story-thread-gradient"
+            ref={gradientRef}
+            gradientUnits="userSpaceOnUse"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
+            {Array.from({ length: ANCHOR_NAMES.length + 2 }, (_, index) => (
+              <stop
+                key={index}
+                ref={(node) => {
+                  colorStopRefs.current[index] = node;
+                }}
+                offset="0"
+                stopColor="var(--navy)"
+              />
+            ))}
+          </linearGradient>
+        </defs>
+        <path ref={glowRef} className={styles.threadGlow} stroke="url(#story-thread-gradient)" />
+        <path ref={pathRef} className={styles.threadLine} stroke="url(#story-thread-gradient)" />
       </svg>
       <div className={styles.traveler} ref={tokenRef}>
         <WorkflowToken stage={stage} compact={compact} reduced={reduced} />

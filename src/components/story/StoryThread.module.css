@@ -22,15 +22,13 @@
 }
 
 .threadLine {
-  stroke: var(--yellow);
   stroke-width: 2.6;
-  opacity: 0.88;
+  opacity: 0.94;
 }
 
 .threadGlow {
-  stroke: var(--yellow-2);
   stroke-width: 11;
-  opacity: 0.16;
+  opacity: 0.2;
 }
 
 .traveler {

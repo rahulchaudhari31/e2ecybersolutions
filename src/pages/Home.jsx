@@ -8,7 +8,6 @@ import LogoMarquee from "../components/ui/LogoMarquee";
 import TestimonialsSlider from "../components/home/TestimonialsSlider";
 import PortfolioPreview from "../components/home/PortfolioPreview";
 import HomeCTA from "../components/home/HomeCTA";
-import SectionDivider from "../components/ui/SectionDivider";
 import Seo from "../components/seo/Seo";
 import StoryProvider from "../components/story/storyContext";
 import { site } from "../data/content";
@@ -30,15 +29,10 @@ export default function Home() {
           jsonLd={[organizationSchema, websiteSchema]}
         />
         <StoryHero />
-        <SectionDivider from="var(--cream)" to="var(--yellow)" variant="wave" />
         <BridgeSection />
-        <SectionDivider from="var(--yellow)" to="var(--cream)" variant="torn" flip />
         <PackagesSection />
-        <SectionDivider from="var(--cream)" to="var(--navy)" variant="curve" />
         <PinnedProcess />
-        <SectionDivider from="var(--navy)" to="var(--blue)" variant="torn" />
         <StatsSection />
-        <SectionDivider from="var(--blue)" to="var(--cream)" variant="curve" flip />
         <LogoMarquee />
         <TestimonialsSlider />
         <PortfolioPreview />
