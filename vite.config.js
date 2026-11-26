@@ -5,6 +5,8 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react()],
   build: {
+    // The three.js chunk is intentionally large but only fetched by the idle-loaded hero scene.
+    chunkSizeWarningLimit: 1000,
     rolldownOptions: {
       output: {
         codeSplitting: {
@@ -21,8 +23,13 @@ export default defineConfig({
             },
             {
               name: 'motion-graphics',
-              test: /node_modules[\\/](gsap|lenis)[\\/]/,
+              test: /node_modules[\\/](gsap|@gsap[\\/]react|lenis)[\\/]/,
               priority: 20,
+            },
+            {
+              name: 'three',
+              test: /node_modules[\\/](three|three-stdlib|maath|meshline|troika-three-text|@react-three[\\/](fiber|drei))[\\/]/,
+              priority: 25,
             },
             {
               name: 'icons',
