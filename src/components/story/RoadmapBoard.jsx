@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
 import { CodeXml, Palette, Rocket, Target } from "lucide-react";
+import dummyImage from "../../assets/images/web-design.webp";
 import { useStory } from "./storyShared";
 import styles from "./RoadmapBoard.module.css";
 
@@ -11,12 +12,19 @@ const milestones = [
   { label: "Launch", note: "Go live", icon: Rocket },
 ];
 
+const focusOptions = ["Website", "Campaign", "Brand"];
+
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
 export default function RoadmapBoard({ focus = "website", className = "" }) {
   const { subscribeProgress, stopsRef, reduced } = useStory();
   const cardRefs = useRef([]);
-  const focusIndex = { brand: 1, website: 2, campaign: 3 }[focus] ?? 2;
+  const activeFocus = focusOptions.includes(
+    focus.charAt(0).toUpperCase() + focus.slice(1),
+  )
+    ? focus.charAt(0).toUpperCase() + focus.slice(1)
+    : "Website";
+  const focusIndex = { Brand: 1, Website: 2, Campaign: 3 }[activeFocus] ?? 2;
 
   useEffect(() => {
     const setters = cardRefs.current.map((node) =>
@@ -56,6 +64,18 @@ export default function RoadmapBoard({ focus = "website", className = "" }) {
         <span>04 milestones</span>
       </div>
 
+      <figure className={styles.preview}>
+        <img
+          src={dummyImage}
+          alt="Project roadmap preview"
+          width="1400"
+          height="933"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption className={styles.previewTag}>One plan. Built to move.</figcaption>
+      </figure>
+
       <div className={styles.milestones}>
         {milestones.map((milestone, index) => {
           const Icon = milestone.icon;
@@ -78,6 +98,23 @@ export default function RoadmapBoard({ focus = "website", className = "" }) {
             </div>
           );
         })}
+      </div>
+
+      <div className={styles.focus}>
+        <p className={styles.focusLabel}>Set the project focus</p>
+        <div className={styles.focusOptions} aria-label="Project focus options">
+          {focusOptions.map((option) => (
+            <span
+              key={option}
+              className={`${styles.focusOption} ${
+                option === activeFocus ? styles.focusActive : ""
+              }`}
+            >
+              {option}
+            </span>
+          ))}
+        </div>
+        <p className={styles.focusNote}>We shape the route with you.</p>
       </div>
 
       <div className={styles.rail} aria-hidden="true">
