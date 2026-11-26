@@ -12,11 +12,12 @@ export default function CustomCursor() {
 
   useEffect(() => {
     const finePointer = window.matchMedia("(pointer: fine)").matches;
+    const wideEnough = window.matchMedia("(min-width: 1025px)").matches;
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    if (!finePointer || reducedMotion) return undefined;
+    if (!finePointer || !wideEnough || reducedMotion) return undefined;
 
     const dot = dotRef.current;
     const ring = ringRef.current;

@@ -10,8 +10,8 @@ import {
   Target,
   TrendingUp,
 } from "lucide-react";
-import useCounter from "../../hooks/useCounter";
 import { stats } from "../../data/content";
+import CountUp from "../ui/CountUp";
 import Container from "../ui/Container";
 import GradientBlobs from "../ui/GradientBlobs";
 import SectionHeading from "../ui/SectionHeading";
@@ -29,30 +29,6 @@ const confetti = [
   { x: 150, y: -38, rotate: 28, Icon: Sparkles },
   { x: -156, y: 6, rotate: -8, Icon: Rocket },
 ];
-
-function StatValue({ value, reduced, enabled }) {
-  const match = value.match(/^([^\d]*)([\d,]+)(.*)$/);
-  const target = match ? Number(match[2].replace(/,/g, "")) : null;
-  const display = useCounter(target ?? 0, {
-    duration: 1450,
-    enabled: enabled && !reduced && target !== null,
-  });
-
-  if (target === null || reduced) {
-    return <span>{value}</span>;
-  }
-
-  return (
-    <span>
-      <span className="sr-only">{value}</span>
-      <span aria-hidden="true">
-        {match[1]}
-        {Math.round(display).toLocaleString("en-GB")}
-        {match[3]}
-      </span>
-    </span>
-  );
-}
 
 export default function StatsSection() {
   const reduced = useReducedMotion();
@@ -112,7 +88,7 @@ export default function StatsSection() {
             >
               <span className={styles.statIndex}>0{index + 1}</span>
               <strong className={styles.value}>
-                <StatValue value={stat.value} reduced={still} enabled={arrived} />
+                <CountUp value={stat.value} reduced={still} enabled={arrived} />
               </strong>
               <p>{stat.label}</p>
             </motion.div>

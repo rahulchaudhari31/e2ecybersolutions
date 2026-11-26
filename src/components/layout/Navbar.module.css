@@ -10,7 +10,12 @@
     padding var(--dur) var(--ease),
     background-color var(--dur) var(--ease),
     border-color var(--dur) var(--ease),
-    box-shadow var(--dur) var(--ease);
+    box-shadow var(--dur) var(--ease),
+    transform 0.45s var(--ease-out);
+}
+
+.hidden {
+  transform: translate3d(0, -110%, 0);
 }
 
 .scrolled {

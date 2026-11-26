@@ -44,7 +44,22 @@ export default function PortfolioPreview() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.62, delay: index * 0.06, ease }}
             >
-              <MotionLink to={project.to} className={styles.card}>
+              <MotionLink
+                to={project.to}
+                className={styles.card}
+                {...(reduced
+                  ? {}
+                  : {
+                      initial: { clipPath: "inset(0 0 100% 0)" },
+                      whileInView: { clipPath: "inset(0 0 0% 0)" },
+                      viewport: { once: true, amount: 0.15 },
+                      transition: {
+                        duration: 0.85,
+                        delay: index * 0.06 + 0.08,
+                        ease,
+                      },
+                    })}
+              >
                 <img
                   src={project.image.src}
                   alt={project.title}
@@ -54,6 +69,7 @@ export default function PortfolioPreview() {
                   decoding="async"
                 />
                 <span className={styles.cardShade} aria-hidden="true" />
+                <span className={styles.cardOverlay} aria-hidden="true" />
                 <span className={styles.category}>{project.category}</span>
                 <span className={styles.arrow} aria-hidden="true">
                   <ArrowUpRight size={18} strokeWidth={2} />

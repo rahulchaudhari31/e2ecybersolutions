@@ -108,6 +108,30 @@
   will-change: transform;
 }
 
+.glowSurface {
+  position: relative;
+}
+
+.glowSurface::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    360px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+    rgba(47, 107, 255, 0.16),
+    transparent 62%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.card:hover .glowSurface::after {
+  opacity: 1;
+}
+
 .imageWrap {
   position: relative;
   aspect-ratio: 4 / 3;
@@ -202,6 +226,11 @@
 
 .cardFoot > span svg {
   color: var(--meadow);
+  transition: transform var(--dur) var(--ease-spring);
+}
+
+.card:hover .cardFoot > span svg {
+  transform: scale(1.18) rotate(-8deg);
 }
 
 .cardLink {

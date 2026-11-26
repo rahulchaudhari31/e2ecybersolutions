@@ -135,6 +135,7 @@ function ProjectModal({ project, onClose }) {
 }
 
 export default function Portfolio() {
+  const reduced = useReducedMotion();
   const [filter, setFilter] = useState("All");
   const [activeProject, setActiveProject] = useState(null);
 
@@ -185,9 +186,9 @@ export default function Portfolio() {
             <motion.div
               key={filter}
               className={styles.grid}
-              initial={{ opacity: 0 }}
+              initial={reduced ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              exit={reduced ? undefined : { opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
               {visible.map((project, index) => (
@@ -195,8 +196,12 @@ export default function Portfolio() {
                   layout
                   key={project.title}
                   className={`${styles.card} ${styles[project.size]}`}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={
+                    reduced
+                      ? false
+                      : { opacity: 0, y: 24, clipPath: "inset(0 0 100% 0)" }
+                  }
+                  animate={{ opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)" }}
                   exit={{ opacity: 0, y: -16 }}
                   transition={{
                     duration: 0.5,

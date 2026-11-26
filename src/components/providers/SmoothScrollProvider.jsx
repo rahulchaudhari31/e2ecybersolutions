@@ -38,6 +38,7 @@ export default function SmoothScrollProvider({ children }) {
 
     return () => {
       gsap.ticker.remove(tick);
+      gsap.ticker.lagSmoothing(500, 33);
       lenis.destroy();
       lenisRef.current = null;
 

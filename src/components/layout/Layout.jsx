@@ -7,6 +7,7 @@ import ScrollToTop from "./ScrollToTop";
 import CustomCursor from "../ui/CustomCursor";
 import PageTransition from "../ui/PageTransition";
 import ScrollProgress from "../ui/ScrollProgress";
+import BackToTop from "../ui/BackToTop";
 import SectionDivider from "../ui/SectionDivider";
 import RouteFallback from "../ui/RouteFallback";
 import styles from "./Layout.module.css";
@@ -14,12 +15,15 @@ import styles from "./Layout.module.css";
 export default function Layout() {
   return (
     <div className={styles.shell}>
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
       <Preloader />
       <ScrollProgress />
       <CustomCursor />
       <ScrollToTop />
       <Navbar />
-      <main className={styles.main}>
+      <main id="main" className={styles.main}>
         <PageTransition>
           <Suspense fallback={<RouteFallback />}>
             <Outlet />
@@ -33,6 +37,7 @@ export default function Layout() {
         height={72}
       />
       <Footer />
+      <BackToTop />
     </div>
   );
 }

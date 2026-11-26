@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import { assets, site } from "../../data/content";
 import Container from "../ui/Container";
@@ -25,6 +26,7 @@ const serviceLinks = [
 ];
 
 export default function Footer() {
+  const reduced = useReducedMotion();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
@@ -36,7 +38,13 @@ export default function Footer() {
   };
 
   return (
-    <footer className={styles.footer}>
+    <motion.footer
+      className={styles.footer}
+      initial={reduced ? false : { opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.02 }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+    >
       <Container className={styles.ctaBand}>
         <div className={styles.ctaCopy}>
           <span className={styles.kicker}>Have a project in mind?</span>
@@ -160,6 +168,6 @@ export default function Footer() {
         <p>{site.copyright}</p>
         <p className={styles.bottomNote}>Design. Build. Grow. — Birmingham, UK</p>
       </Container>
-    </footer>
+    </motion.footer>
   );
 }
