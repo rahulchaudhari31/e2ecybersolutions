@@ -12,6 +12,10 @@
   animation: scroll linear infinite;
 }
 
+.marquee:hover .track {
+  animation-play-state: paused;
+}
+
 .item {
   display: inline-flex;
   align-items: center;

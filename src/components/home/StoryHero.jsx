@@ -18,6 +18,7 @@ import { home } from "../../data/content";
 import { usePageReady } from "../../hooks/usePageReady";
 import Button from "../ui/Button";
 import Container from "../ui/Container";
+import ScrollCue from "../ui/ScrollCue";
 import styles from "./StoryHero.module.css";
 
 const ProjectHub = lazy(() => import("../story/ProjectHub"));
@@ -499,6 +500,8 @@ export default function StoryHero() {
           </motion.div>
         </motion.div>
       </Container>
+
+      <ScrollCue />
     </section>
   );
 }

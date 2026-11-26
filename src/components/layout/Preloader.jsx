@@ -4,12 +4,34 @@ import { assets } from "../../data/content";
 import { markPageReady } from "../../hooks/usePageReady";
 import styles from "./Preloader.module.css";
 
+const SESSION_KEY = "e2e:preloader-seen";
+
+function markSeen() {
+  try {
+    window.sessionStorage.setItem(SESSION_KEY, "1");
+  } catch {
+    // Storage can be unavailable in private browsing — the preloader still works.
+  }
+}
+
+function hasBeenSeen() {
+  try {
+    return window.sessionStorage.getItem(SESSION_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
 export default function Preloader() {
   const reduced = useReducedMotion();
-  const [phase, setPhase] = useState("visible");
+  const [phase, setPhase] = useState(() =>
+    hasBeenSeen() ? "done" : "visible",
+  );
+  const skipped = phase === "done";
 
   useEffect(() => {
-    if (reduced) {
+    if (reduced || skipped) {
+      markSeen();
       markPageReady();
       return undefined;
     }
@@ -17,14 +39,17 @@ export default function Preloader() {
     const exit = window.setTimeout(() => {
       markPageReady();
       setPhase("exiting");
-    }, 760);
-    const done = window.setTimeout(() => setPhase("done"), 1180);
+    }, 820);
+    const done = window.setTimeout(() => {
+      markSeen();
+      setPhase("done");
+    }, 1320);
 
     return () => {
       window.clearTimeout(exit);
       window.clearTimeout(done);
     };
-  }, [reduced]);
+  }, [reduced, skipped]);
 
   if (reduced || phase === "done") return null;
 

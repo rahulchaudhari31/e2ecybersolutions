@@ -50,6 +50,21 @@ function PackageCard({ service, index, reduced }) {
     disabled: reduced,
   });
 
+  const handlePointerMove = (event) => {
+    onPointerMove(event);
+    if (reduced || event.pointerType !== "mouse") return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    event.currentTarget.style.setProperty(
+      "--glow-x",
+      `${((event.clientX - rect.left) / rect.width) * 100}%`,
+    );
+    event.currentTarget.style.setProperty(
+      "--glow-y",
+      `${((event.clientY - rect.top) / rect.height) * 100}%`,
+    );
+  };
+
   return (
     <motion.div
       className={styles.cardReveal}
@@ -66,9 +81,9 @@ function PackageCard({ service, index, reduced }) {
         transition={{ type: "spring", stiffness: 260, damping: 24 }}
       >
         <div
-          className={styles.tiltSurface}
+          className={`${styles.tiltSurface} ${styles.glowSurface}`}
           ref={tiltRef}
-          onPointerMove={onPointerMove}
+          onPointerMove={handlePointerMove}
           onPointerLeave={onPointerLeave}
         >
           <div className={styles.imageWrap}>

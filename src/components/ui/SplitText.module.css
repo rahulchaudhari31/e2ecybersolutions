@@ -1,0 +1,23 @@
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+  vertical-align: bottom;
+}
+
+.word {
+  display: inline-block;
+  white-space: pre;
+  will-change: transform;
+}
+
+.accent {
+  color: var(--blue);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word {
+    will-change: auto;
+  }
+}

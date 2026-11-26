@@ -13,26 +13,40 @@ import {
 import { assets, navigation, site } from "../../data/content";
 import Container from "../ui/Container";
 import Button from "../ui/Button";
+import StaggerGroup, { StaggerItem } from "../ui/StaggerGroup";
 import styles from "./Navbar.module.css";
 
 const ease = [0.16, 1, 0.3, 1];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const reduced = useReducedMotion();
   const closeRef = useRef(null);
   const panelRef = useRef(null);
+  const burgerRef = useRef(null);
+  const menuOpenRef = useRef(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 18);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 18);
+
+      if (!menuOpenRef.current && Math.abs(y - lastY) > 6) {
+        setHidden(y > lastY && y > 160);
+        lastY = y;
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
+    menuOpenRef.current = menuOpen;
     document.body.classList.toggle("menu-open", menuOpen);
 
     const lenis = window.__lenis;
@@ -55,6 +69,7 @@ export default function Navbar() {
       if (event.key === "Escape") {
         setMenuOpen(false);
         setServicesOpen(false);
+        burgerRef.current?.focus();
         return;
       }
 
@@ -96,11 +111,16 @@ export default function Navbar() {
   const closeMenu = () => {
     setMenuOpen(false);
     setServicesOpen(false);
+    burgerRef.current?.focus();
   };
 
   return (
     <>
-      <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
+      <header
+        className={`${styles.header} ${scrolled ? styles.scrolled : ""} ${
+          hidden && !menuOpen ? styles.hidden : ""
+        }`.trim()}
+      >
         <Container className={styles.inner}>
           <Link to="/" className={styles.logo} aria-label="e2e Cyber Solutions home">
             <img src={assets.logo} alt="e2e Cyber Solutions" width="142" height="42" />
@@ -189,9 +209,13 @@ export default function Navbar() {
               Let&apos;s talk
             </Button>
             <button
+              ref={burgerRef}
               type="button"
               className={styles.burger}
-              onClick={() => setMenuOpen(true)}
+              onClick={() => {
+                setMenuOpen(true);
+                setHidden(false);
+              }}
               aria-label="Open menu"
               aria-controls="mobile-menu"
               aria-expanded={menuOpen}
@@ -247,10 +271,17 @@ export default function Navbar() {
                 </button>
               </div>
 
-              <nav className={styles.mobileNav} aria-label="Mobile navigation">
+              <StaggerGroup
+                as="nav"
+                className={styles.mobileNav}
+                aria-label="Mobile navigation"
+                trigger="mount"
+                stagger={0.065}
+                delay={0.12}
+              >
                 {navigation.map((item, index) =>
                   item.groups ? (
-                    <div key={item.label} className={styles.mobileGroup}>
+                    <StaggerItem key={item.label} className={styles.mobileGroup}>
                       <button
                         type="button"
                         className={styles.mobileLink}
@@ -306,9 +337,9 @@ export default function Navbar() {
                           </motion.div>
                         ) : null}
                       </AnimatePresence>
-                    </div>
+                    </StaggerItem>
                   ) : (
-                    <Link
+                    <StaggerItem
                       key={item.label}
                       to={item.to}
                       className={styles.mobileLink}
@@ -321,10 +352,10 @@ export default function Navbar() {
                         {item.label}
                       </span>
                       <ArrowUpRight size={19} strokeWidth={1.7} />
-                    </Link>
+                    </StaggerItem>
                   ),
                 )}
-              </nav>
+              </StaggerGroup>
 
               <div className={styles.mobileFoot}>
                 <a href={site.phoneHref} className={styles.mobileContact}>

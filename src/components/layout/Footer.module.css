@@ -95,11 +95,21 @@
     transform var(--dur) var(--ease);
 }
 
-.social:hover {
+.social:hover,
+.social:focus-visible {
   background: var(--yellow);
   border-color: var(--yellow);
   color: var(--navy);
-  transform: translateY(-3px);
+  transform: translate3d(0, -3px, 0) scale(1.06);
+}
+
+.social svg {
+  transition: transform var(--dur) var(--ease-spring);
+}
+
+.social:hover svg,
+.social:focus-visible svg {
+  transform: rotate(-8deg) scale(1.08);
 }
 
 .col {

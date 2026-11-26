@@ -16,9 +16,8 @@ export default function useScrollReveal({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
-        setInView(true);
-        if (once) observer.disconnect();
+        setInView(entry.isIntersecting);
+        if (entry.isIntersecting && once) observer.disconnect();
       },
       { threshold: amount, rootMargin },
     );

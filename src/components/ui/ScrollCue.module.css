@@ -1,0 +1,59 @@
+.cue {
+  position: absolute;
+  z-index: 1;
+  bottom: clamp(14px, 2vw, 26px);
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.label {
+  font-size: 8px;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.mouse {
+  position: relative;
+  display: block;
+  width: 18px;
+  height: 28px;
+  border: 1.5px solid var(--navy);
+  border-radius: 12px;
+  opacity: 0.55;
+}
+
+.wheel {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 2px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--navy);
+  animation: wheelBounce 1.8s var(--ease-out) infinite;
+}
+
+@keyframes wheelBounce {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translate3d(-50%, 0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate3d(-50%, 7px, 0);
+  }
+}
+
+@media (max-width: 640px) {
+  .label {
+    display: none;
+  }
+}

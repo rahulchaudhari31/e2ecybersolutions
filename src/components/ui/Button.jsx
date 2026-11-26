@@ -15,6 +15,9 @@ export default function Button({
   className = "",
   style,
   type = "button",
+  onPointerMove: customPointerMove,
+  onPointerLeave: customPointerLeave,
+  onPointerDown: customPointerDown,
   ...props
 }) {
   const reduced = useReducedMotion();
@@ -30,7 +33,7 @@ export default function Button({
     .join(" ");
 
   const handlePointerDown = (event) => {
-    if (reduced) return;
+    if (reduced || event.pointerType === "touch") return;
 
     const node = ref.current;
     if (!node) return;
@@ -79,18 +82,25 @@ export default function Button({
     </>
   );
 
-  const commonProps = {
-    ref,
-    className: classes,
-    style,
-    onPointerMove,
-    onPointerLeave,
-    onPointerDown: handlePointerDown,
+  const commonProps = { ref, className: classes, style };
+  const handlers = {
+    onPointerMove: (event) => {
+      onPointerMove(event);
+      customPointerMove?.(event);
+    },
+    onPointerLeave: (event) => {
+      onPointerLeave(event);
+      customPointerLeave?.(event);
+    },
+    onPointerDown: (event) => {
+      handlePointerDown(event);
+      customPointerDown?.(event);
+    },
   };
 
   if (to) {
     return (
-      <Link to={to} {...props} {...commonProps}>
+      <Link to={to} {...commonProps} {...props} {...handlers}>
         {content}
       </Link>
     );
@@ -98,14 +108,14 @@ export default function Button({
 
   if (href) {
     return (
-      <a href={href} {...props} {...commonProps}>
+      <a href={href} {...commonProps} {...props} {...handlers}>
         {content}
       </a>
     );
   }
 
   return (
-    <button type={type} {...props} {...commonProps}>
+    <button type={type} {...commonProps} {...props} {...handlers}>
       {content}
     </button>
   );

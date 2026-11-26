@@ -72,6 +72,25 @@
   opacity: 0.82;
 }
 
+.cardOverlay {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 30%, rgba(255, 201, 60, 0.2));
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity var(--dur) var(--ease),
+    transform 0.6s var(--ease-out);
+}
+
+.card:hover .cardOverlay,
+.card:focus-visible .cardOverlay {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
 .category {
   position: absolute;
   z-index: 2;

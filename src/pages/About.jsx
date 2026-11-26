@@ -18,6 +18,7 @@ import { TestimonialsBand } from "../components/inner/ServiceSections";
 import Seo from "../components/seo/Seo";
 import { about, aboutValues, stats, site } from "../data/content";
 import { placeholderImages, placeholderTeam } from "../data/placeholders";
+import useScrollReveal from "../hooks/useScrollReveal";
 import styles from "./About.module.css";
 
 const ease = [0.16, 1, 0.3, 1];
@@ -53,6 +54,7 @@ const timeline = [
 
 export default function About() {
   const reduced = useReducedMotion();
+  const [timelineRef, timelineInView] = useScrollReveal({ amount: 0.2 });
 
   return (
     <>
@@ -191,8 +193,13 @@ export default function About() {
             <span className={styles.timelineStamp}>2016 — today</span>
           </div>
 
-          <div className={styles.timeline}>
-            <span className={styles.timelineLine} aria-hidden="true" />
+          <div className={styles.timeline} ref={timelineRef}>
+            <span
+              className={`${styles.timelineLine} ${
+                timelineInView || reduced ? styles.timelineLineVisible : ""
+              }`}
+              aria-hidden="true"
+            />
             {timeline.map((item, index) => (
               <Reveal
                 key={item.year}

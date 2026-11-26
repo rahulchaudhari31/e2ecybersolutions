@@ -35,6 +35,11 @@
   animation: scroll 32s linear infinite;
 }
 
+.viewport:hover .track,
+.viewport:focus-within .track {
+  animation-play-state: paused;
+}
+
 .group {
   display: flex;
   align-items: center;

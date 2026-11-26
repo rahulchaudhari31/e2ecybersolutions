@@ -120,6 +120,29 @@ ol {
   border-radius: 4px;
 }
 
+.skip-link {
+  position: fixed;
+  z-index: 700;
+  top: 8px;
+  left: 8px;
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  background: var(--navy);
+  color: var(--cream);
+  font-size: 12px;
+  font-weight: var(--weight-semibold);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, -12px, 0);
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
+}
+
 /* Hide the native cursor only when the custom cursor is active. */
 html.has-custom-cursor,
 html.has-custom-cursor body,
