@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { home } from "../../data/content";
 import { usePageReady } from "../../hooks/usePageReady";
+import HeroSceneMount from "../three/HeroSceneMount";
 import Button from "../ui/Button";
 import Container from "../ui/Container";
 import ScrollCue from "../ui/ScrollCue";
@@ -141,6 +142,7 @@ export default function StoryHero() {
       onPointerLeave={handlePointerLeave}
     >
       <div className={styles.grid} aria-hidden="true" />
+      <HeroSceneMount />
       <motion.div
         className={styles.glow}
         aria-hidden="true"

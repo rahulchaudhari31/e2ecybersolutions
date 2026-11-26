@@ -1,0 +1,45 @@
+.layer {
+  position: absolute;
+  top: 4%;
+  right: -4%;
+  z-index: 0;
+  width: min(62%, 780px);
+  height: 90%;
+  opacity: 1;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.fallback {
+  position: absolute;
+  top: 8%;
+  right: 2%;
+  width: 78%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 38%, rgba(92, 139, 255, 0.32), transparent 52%),
+    radial-gradient(circle at 72% 68%, rgba(11, 27, 58, 0.16), transparent 58%),
+    repeating-radial-gradient(circle at 50% 50%, rgba(47, 107, 255, 0.12) 0 1px, transparent 1px 34px);
+  filter: blur(2px);
+  opacity: 0.52;
+}
+
+@media (max-width: 1023px) {
+  .layer {
+    top: 10%;
+    right: -14%;
+    width: 96%;
+    height: 66%;
+  }
+
+  .fallback {
+    opacity: 0.34;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fallback {
+    filter: none;
+  }
+}
