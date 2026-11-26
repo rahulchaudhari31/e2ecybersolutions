@@ -9,6 +9,27 @@ gsap.registerPlugin(ScrollTrigger);
 export default function SmoothScrollProvider({ children }) {
   const lenisRef = useRef(null);
 
+  // Scroll-linked timelines measure the page before fonts and images settle.
+  useEffect(() => {
+    const refresh = () => ScrollTrigger.refresh();
+    const pendingImages = Array.from(document.images).filter((image) => !image.complete);
+
+    if (document.fonts?.ready) document.fonts.ready.then(refresh);
+    window.addEventListener("load", refresh);
+    pendingImages.forEach((image) => {
+      image.addEventListener("load", refresh);
+      image.addEventListener("error", refresh);
+    });
+
+    return () => {
+      window.removeEventListener("load", refresh);
+      pendingImages.forEach((image) => {
+        image.removeEventListener("load", refresh);
+        image.removeEventListener("error", refresh);
+      });
+    };
+  }, []);
+
   useEffect(() => {
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
