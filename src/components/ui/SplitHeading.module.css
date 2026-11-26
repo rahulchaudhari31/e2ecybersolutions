@@ -1,0 +1,4 @@
+.heading :global(.gsap-word) {
+  display: inline-block;
+  will-change: transform;
+}

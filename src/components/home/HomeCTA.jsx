@@ -5,7 +5,7 @@ import { home, site } from "../../data/content";
 import { useOptionalStory } from "../story/storyShared";
 import Container from "../ui/Container";
 import GradientBlobs from "../ui/GradientBlobs";
-import SplitText from "../ui/SplitText";
+import SplitHeading from "../ui/SplitHeading";
 import styles from "./HomeCTA.module.css";
 
 const MotionLink = motion.create(Link);
@@ -52,7 +52,7 @@ export default function HomeCTA() {
             <motion.span className={styles.eyebrow} variants={rise}>
               {home.cta.eyebrow}
             </motion.span>
-            <SplitText text="Let’s get you started." delay={0.06} />
+            <SplitHeading text="Let’s get you started." delay={0.06} reduced={still} />
             <motion.p variants={rise}>{home.cta.body}</motion.p>
             <motion.div className={styles.contactLine} variants={rise}>
               <a href={site.phoneHref}>

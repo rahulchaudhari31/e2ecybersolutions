@@ -152,6 +152,12 @@ export const placeholderImages = {
       160,
     ),
   ],
+  testimonialFeature: image(
+    "photo-1531123897727-8f129e1688ce",
+    "",
+    "Large testimonial portrait — replace with a client photograph.",
+    900,
+  ),
   team: [
     image(
       "photo-1494790108377-be9c29b29330",

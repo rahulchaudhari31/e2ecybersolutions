@@ -5,7 +5,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { ArrowLeft, ArrowRight, Quote, Star } from "lucide-react";
-import { testimonials } from "../../data/content";
+import { assets, testimonials } from "../../data/content";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
 import styles from "./TestimonialsSlider.module.css";
@@ -96,10 +96,17 @@ export default function TestimonialsSlider() {
                   <p>“{current.quote}”</p>
                 </blockquote>
                 <figcaption>
-                  <span className={styles.initial} aria-hidden="true">
-                    {current.name.charAt(0)}
-                  </span>
-                  <span>
+                  <img
+                    className={styles.initial}
+                    src={assets.dummyAvatar}
+                    alt=""
+                    width="38"
+                    height="38"
+                    loading="lazy"
+                    decoding="async"
+                    aria-hidden="true"
+                  />
+                  <span className={styles.captionName}>
                     <strong>{current.name}</strong>
                     <small>e2e client story</small>
                   </span>
@@ -138,7 +145,7 @@ export default function TestimonialsSlider() {
               <AnimatePresence mode="wait">
                 <motion.img
                   key={current.name}
-                  src={current.avatar}
+                  src={assets.dummyAvatar}
                   alt=""
                   width={82}
                   height={82}
