@@ -24,6 +24,7 @@ import face1 from "../assets/images/face-1.jpg";
 import face2 from "../assets/images/face-2.jpg";
 import face3 from "../assets/images/face-3.jpg";
 import face4 from "../assets/images/face-4.jpg";
+import { placeholderImages } from "./placeholders";
 
 /* ------------------------------------------------------------------
    Original image URLs, captured from the live e2e Cyber Solutions site.
@@ -98,6 +99,7 @@ export const assets = {
   face2,
   face3,
   face4,
+  dummyAvatar: placeholderImages.testimonialFeature.src,
 };
 
 export const site = {
